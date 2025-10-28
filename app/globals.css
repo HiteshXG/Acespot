@@ -18,15 +18,33 @@
 
 /* --- global theme & components --- */
 @layer base {
+  /* Root element for smooth transitions */
+  html {
+    @apply transition-colors duration-300;
+  }
+
   /* Base page background & text for light theme */
   body {
-    @apply bg-white text-gray-700 transition-colors duration-300;
+    @apply bg-white text-gray-800 transition-colors duration-300;
+    min-height: 100vh;
   }
 
   /* When .dark class is applied to <html>, override body */
   .dark body {
-    @apply bg-gray-900 text-gray-100;
+    @apply bg-gray-900 text-gray-200;
   }
+  
+  /* Ensure all main containers have proper backgrounds */
+  main, #__next {
+    min-height: 100vh;
+  }
+
+  /* Ensure consistent background for main content areas */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  /* Theme-specific component overrides removed - using inline styles instead */
 }
 
 /* Primary button + other component styles */

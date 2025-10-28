@@ -4,6 +4,7 @@ import { AppContextProvider } from "@/context/AppContext";
 import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
@@ -17,14 +18,19 @@ const themeInitScript = `(function() {
     // 1) Check saved user preference
     var theme = localStorage.getItem('theme');
     if (!theme) {
-      // 2) If none, use system preference
-      var m = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      theme = m ? 'dark' : 'light';
+      // 2) Default to light theme instead of system preference
+      theme = 'light';
+      localStorage.setItem('theme', 'light');
     }
-    if (theme === 'dark') document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
+    // Always remove dark class first, then add if needed
+    document.documentElement.classList.remove('dark');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
   } catch (e) {
     console.warn('theme init error', e);
+    // Fallback to light theme
+    document.documentElement.classList.remove('dark');
   }
 })();`;
 
@@ -32,13 +38,15 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en" >
-        <body className={`${outfit.className} antialiased text-gray-700`} >
+        <body className={`${outfit.className} antialiased`} >
           <Script id="theme-init" strategy="beforeInteractive">
             {themeInitScript}
           </Script>
           <Toaster />
           <AppContextProvider>
-            {children}
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>
           </AppContextProvider>
         </body>
       </html>
