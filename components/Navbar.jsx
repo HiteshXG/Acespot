@@ -12,27 +12,38 @@ const Navbar = () => {
   const { openSignIn } = useClerk();
 
   const [theme, setTheme] = useState("light");
+  
+  // Debug: log theme changes
+  useEffect(() => {
+    console.log('Navbar theme state:', theme);
+  }, [theme]);
 
-    useEffect(() => {
+  useEffect(() => {
     // Read saved theme (if any) or detect system preference
     try {
       const saved = localStorage.getItem("theme");
       if (saved) {
         setTheme(saved);
-        document.documentElement.classList.toggle("dark", saved === "dark");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
       } else {
-        const prefersDark =
-          window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const initial = prefersDark ? "dark" : "light";
-        setTheme(initial);
-        document.documentElement.classList.toggle("dark", initial === "dark");
+        // Default to light theme instead of system preference
+        setTheme("light");
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
       }
     } catch (e) {
       console.warn("could not read theme", e);
+      // Fallback to light theme
+      setTheme("light");
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
-    const toggleTheme = () => {
+  const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     try {
@@ -40,11 +51,22 @@ const Navbar = () => {
     } catch (e) {
       // ignore
     }
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
 
   return (
-    <nav className="flex items-center justify-between px-6 md:px-16 lg:px-32 py-3 border-b border-gray-300 text-gray-700 h-16">
+    <nav 
+      className="flex items-center justify-between px-6 md:px-16 lg:px-32 py-3 border-b h-16"
+      style={{
+        backgroundColor: theme === 'dark' ? '#111827' : '#ffffff',
+        color: theme === 'dark' ? '#e5e7eb' : '#1f2937',
+        borderColor: theme === 'dark' ? '#374151' : '#e5e7eb'
+      }}
+    >
       <Image
         className="cursor-pointer w-30 md:w-32"
         onClick={() => router.push("/")}
@@ -52,22 +74,22 @@ const Navbar = () => {
         alt="logo"
       />
       <div className="flex gap-4 lg:gap-8 max-md:hidden">
-        <Link href="/" className="hover:text-gray-900 transition">
+        <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">
           Home
         </Link>
-        <Link href="/shop" className="hover:text-gray-900 transition">
+        <Link href="/shop" className="hover:text-black dark:hover:text-white transition-colors">
           Shop
         </Link>
-        <Link href="/" className="hover:text-gray-900 transition">
+        <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">
           About us
         </Link>
-        <Link href="/" className="hover:text-gray-900 transition">
+        <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">
           Contact us
         </Link>
         {isSeller && (
           <button
             onClick={() => router.push("/seller")}
-            className="text-xs border px-4 py-1.5 rounded-full"
+            className="text-xs border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
             Seller Dashboard
           </button>
@@ -79,7 +101,7 @@ const Navbar = () => {
           onClick={toggleTheme}
           aria-label="Toggle theme"
           title="Toggle theme"
-          className="p-2 rounded-full border hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          className="p-2 rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
         >
           {theme === "light" ? "🌙" : "☀️"}
         </button>
@@ -96,7 +118,7 @@ const Navbar = () => {
           </>
         :
           <button
-            className="flex items-center gap-2 hover:text-gray-900 transition"
+            className="flex items-center gap-2 hover:text-black dark:hover:text-white transition-colors"
             onClick={openSignIn}
           >
             <Image src={assets.user_icon} alt="user icon" />
@@ -108,7 +130,7 @@ const Navbar = () => {
         {isSeller && (
           <button
             onClick={() => router.push("/seller")}
-            className="text-xs border px-4 py-1.5 rounded-full"
+            className="text-xs border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
             Seller Dashboard
           </button>
@@ -117,7 +139,7 @@ const Navbar = () => {
           onClick={toggleTheme}
           aria-label="Toggle theme"
           title="Toggle theme"
-          className="p-2 rounded-full border hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          className="p-2 rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
         >
           {theme === "light" ? "🌙" : "☀️"}
         </button>
@@ -140,7 +162,7 @@ const Navbar = () => {
           </>
         :
           <button
-            className="flex items-center gap-2 hover:text-gray-900 transition"
+            className="flex items-center gap-2 hover:text-black dark:hover:text-white transition-colors"
             onClick={openSignIn}
           >
             <Image src={assets.user_icon} alt="user icon" />

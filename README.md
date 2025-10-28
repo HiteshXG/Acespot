@@ -58,3 +58,8 @@ pnpm dev
 
 # Using bun
 bun dev
+
+## ⭐ Support
+
+If you like this project, don’t forget to **star⭐ the repo** to show your support!  
+Your feedback and contributions are always appreciated 🙌

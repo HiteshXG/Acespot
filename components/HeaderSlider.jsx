@@ -60,14 +60,14 @@ const HeaderSlider = () => {
               <p className="md:text-base text-blue-950 pb-1">
                 {slide.offer}
               </p>
-              <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
+              <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold text-gray-900">
                 {slide.title}
               </h1>
               <div className="flex items-center mt-4 md:mt-6">
                 <button className="md:px-10 px-7 md:py-2.5 py-2 bg-blue-950 rounded-full text-white font-medium">
                   {slide.buttonText1}
                 </button>
-                <button className="group flex items-center gap-2 px-6 py-2.5 font-medium">
+                <button className="group flex items-center gap-2 px-6 py-2.5 font-medium text-gray-900">
                   {slide.buttonText2}
                   <Image className="group-hover:translate-x-1 transition" src={assets.arrow_icon} alt="arrow_icon"/>
                 </button>

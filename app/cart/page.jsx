@@ -139,7 +139,7 @@ const Cart = () => {
           </div>
           <button
             className="group flex items-center mt-6 gap-2 text-blue-950"
-            onClick={() => router.push("/all-products")}
+            onClick={() => router.push("/shop")}
           >
             <Image
               className="group-hover:-translate-x-1 transition"
