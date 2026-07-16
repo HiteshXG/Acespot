@@ -38,6 +38,8 @@ A full-stack electronics e-commerce platform built with **Next.js 15**, **Clerk*
 
 </details>
 
+<p align="right">(<a href="#readme-top">⬆ Back to Top</a>)</p>
+
 ---
 
 # Live Demo
@@ -136,7 +138,7 @@ Acespot/
 # Installation
 
 ```bash
-git clone https://github.com/your-username/Acespot.git
+git clone https://github.com/HiteshXG/Acespot.git
 
 cd Acespot
 
